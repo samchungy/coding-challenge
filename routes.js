@@ -14,3 +14,16 @@ router
   }
 
 })
+.post('/api/venue', async (ctx) => {
+  let payload = ctx.request.body;
+  let {success, errors} = await setVenue(payload);
+  if (errors && errors.length > 0){
+    ctx.status = 400;
+    ctx.body = errors;
+  } else {
+    ctx.body = "Venue Created";
+  }
+})
+
+
+module.exports = router;
