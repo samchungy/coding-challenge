@@ -1,79 +1,80 @@
-const {loadVenue, removeVenue, storeVenue, updateVenue} = require('./venues.dal');
+const {loadVenue, removeVenue, storeVenue,
+  updateVenue} = require('./venues.dal');
 const {overwriteVenue} = require('./venues.update');
 const {verifyModel} = require('./venues.verify');
 const {getPub} = require('../pubs/pubs.controller');
 
 /**
  * Gets a venue based on a property number
- * @param {Object} payload 
+ * @param {Object} payload
  */
-async function getVenue(payload){
-  if (payload.property_number){
-    let venue = loadVenue(payload.property_number)
-    if (venue.length){
-      let pub = await getPub(payload.property_number);
-      if (pub){
-        venue[0].capacity = pub.number_of_patrons
+async function getVenue(payload) {
+  if (payload.property_number) {
+    const venue = loadVenue(payload.property_number);
+    if (venue.length) {
+      const pub = await getPub(payload.property_number);
+      if (pub) {
+        venue[0].capacity = pub.number_of_patrons;
       } else {
-        venue[0].capacity = "UNKNOWN";
+        venue[0].capacity = 'UNKNOWN';
       }
     }
     return venue;
   } else {
-    throw new Error("property_number not supplied");
+    throw new Error('property_number not supplied');
   }
 }
 
 /**
  * Creates a venue based on a payload
- * @param {Object} payload 
+ * @param {Object} payload
  */
-async function setVenue(payload){
-  let errors = verifyModel(payload);
-  if (errors.length > 0){
+async function setVenue(payload) {
+  const errors = verifyModel(payload);
+  if (errors.length > 0) {
     return {success: false, errors: errors};
   }
-  if (loadVenue(payload.property_number).length == 0){
+  if (loadVenue(payload.property_number).length == 0) {
     storeVenue(payload);
-    return {success: true}
-  } else{
-    return {success: false, errors: "Venue already exists"}
+    return {success: true};
+  } else {
+    return {success: false, errors: 'Venue already exists'};
   }
-
 }
 
 /**
  * Upates a venue based on a payload
+ * @param {Object} payload
  */
-async function putVenue(payload){
-  let errors = verifyModel(payload);
-  if (errors.length > 0){
+async function putVenue(payload) {
+  const errors = verifyModel(payload);
+  if (errors.length > 0) {
     return {success: false, errors: errors};
   }
-  let venue = loadVenue(payload.property_number);
-  if (venue.length){
+  const venue = loadVenue(payload.property_number);
+  if (venue.length) {
     venue[0] = overwriteVenue(payload, venue[0]);
     updateVenue(venue[0]);
-    return {success: true}
-  } else{
-    return {success: false, errors: "Venue does not exist"}
+    return {success: true};
+  } else {
+    return {success: false, errors: 'Venue does not exist'};
   }
 }
 
 /**
  * Deletes a venue based on a payload
- * @param {Object} payload 
+ * @param {Object} payload
  */
-async function deleteVenue(payload){
-  if (payload.property_number){
-    let venue = loadVenue(payload.property_number);
-    if (venue.length == 0){
-      throw new Error("No such venue exists");
+async function deleteVenue(payload) {
+  if (payload.property_number) {
+    const venue = loadVenue(payload.property_number);
+    if (venue.length == 0) {
+      throw new Error('No such venue exists');
     }
     removeVenue(venue);
-    return "Venue deleted";
+    return 'Venue deleted';
   } else {
-    throw new Error("property_number not supplied");
+    throw new Error('property_number not supplied');
   }
 }
 
@@ -81,5 +82,5 @@ module.exports = {
   getVenue,
   putVenue,
   setVenue,
-  deleteVenue
-}
+  deleteVenue,
+};

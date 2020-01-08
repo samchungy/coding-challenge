@@ -4,37 +4,49 @@ const {db} = require('../db/initialise');
 
 /**
  * Loads a venue from our database
- * @param {*} propertyNumber 
+ * @param {*} propertyNumber
+ * @return {Array} Returns an array of venue objects
  */
-function loadVenue(propertyNumber){
+function loadVenue(propertyNumber) {
   const venues = db.getCollection(VENUES);
   return venues.find({
-    property_number: propertyNumber
-  })
+    property_number: propertyNumber,
+  });
 }
 
-function updateVenue(venue){
+/**
+ * Updates a venue object in database
+ * @param {Object} venue
+ */
+function updateVenue(venue) {
   const venues = db.getCollection(VENUES);
-  return venues.update(venue);
+  venues.update(venue);
+  return;
 }
 
 /**
  * Stores a venue into the database
- * @param {Object} venue 
+ * @param {Object} venue
  */
-function storeVenue(venue){
+function storeVenue(venue) {
   const venues = db.getCollection(VENUES);
-  return venues.insert(venue);
+  venues.insert(venue);
+  return;
 }
 
-function removeVenue(venue){
+/**
+ * Removes a venue from our database
+ * @param {Object} venue
+ */
+function removeVenue(venue) {
   const venues = db.getCollection(VENUES);
-  return venues.remove(venue)
+  venues.remove(venue);
+  return;
 }
 
 module.exports = {
   loadVenue,
   storeVenue,
   removeVenue,
-  updateVenue
-}
+  updateVenue,
+};
