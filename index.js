@@ -3,7 +3,6 @@ const bodyParser = require('koa-bodyparser');
 const app = new Koa();
 const PORT = process.env.PORT || 1337;
 const routes = require('./routes');
-require('./db/initialise');
 
 app.use(bodyParser());
 
