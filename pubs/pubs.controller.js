@@ -4,7 +4,6 @@ const {fetchPub} = require('./pubs.api');
  * Gets a pub based on a id
  */
 async function getPub(propertyId){
-  console.log(propertyId);
   try {
     let pubsArray = (await fetchPub(propertyId)).data;
     if (pubsArray.length == 0){

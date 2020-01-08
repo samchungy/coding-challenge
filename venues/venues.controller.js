@@ -8,7 +8,6 @@ const {getPub} = require('../pubs/pubs.controller');
  * @param {Object} payload 
  */
 async function getVenue(payload){
-  console.log('here');
   if (payload.property_number){
     let venue = loadVenue(payload.property_number)
     if (venue.length){
@@ -54,7 +53,6 @@ async function putVenue(payload){
   let venue = loadVenue(payload.property_number);
   if (venue.length){
     venue[0] = overwriteVenue(payload, venue[0]);
-    console.log(venue[0]);
     updateVenue(venue[0]);
     return {success: true}
   } else{
